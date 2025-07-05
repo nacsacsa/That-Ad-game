@@ -6,6 +6,7 @@ TagManager:
   tags:
   - fold
   - gate
+  - Prefab
   layers:
   - Default
   - TransparentFX

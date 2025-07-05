@@ -5,11 +5,11 @@ using UnityEngine;
 public class GateValueCallculator : MonoBehaviour
 {
     private char[] operations = { '+', '/', '*' };
-    private int number;
-    private int numberMin = -5;
-    private int numberMax = 5;
+    public int number;
+    private int numberMin = -3;
+    private int numberMax = 3;
 
-    private char operation;
+    public char operation;
     private string gateLabel;
 
     private Renderer rend;
@@ -26,7 +26,12 @@ public class GateValueCallculator : MonoBehaviour
         {
             case '+':
                 number = Random.Range(numberMin, numberMax + 1);
-                gateLabel = number.ToString();
+                if (number > 0)
+                {
+                    gateLabel = "+" + number.ToString();
+                }
+                else
+                    gateLabel = number.ToString();
                 break;
             default:
                 number = Random.Range(1, numberMax + 1);
