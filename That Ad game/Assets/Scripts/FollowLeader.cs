@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class FollowLeader : MonoBehaviour
 {
-    public GameObject target;
+    private Transform target;
     public float followSpeed = 5f;
     public float followDistance = 1f;
+
+    void Start()
+    {
+        target = GameObject.FindWithTag("Player").transform;
+    }
 
     void Update()
     {
