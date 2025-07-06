@@ -59,8 +59,8 @@ public class Logic : MonoBehaviour
         {
             for (int i = 0; i < difference; i++)
             {
-                float numm1 = Random.Range(-0.3f, 0.3f);
-                float numm2 = Random.Range(-0.3f, 0.3f);
+                float numm1 = Random.Range(-0.2f, 0.2f);
+                float numm2 = Random.Range(-0.2f, 0.2f);
                 GameObject newPlayer = Instantiate(playerPrefab, player.transform.position + Vector3.forward * (1 * numm1) + Vector3.left * (1 * numm2), Quaternion.identity);
                 players.Add(newPlayer);
             }

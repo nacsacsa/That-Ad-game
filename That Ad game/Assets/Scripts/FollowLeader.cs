@@ -3,24 +3,27 @@ using UnityEngine;
 public class FollowLeader : MonoBehaviour
 {
     private Transform target;
-    public float followSpeed = 5f;
-    public float followDistance = 1f;
+    public Vector3 offset;
+    public float moveSpeed = 5f;
 
     void Start()
     {
         target = GameObject.FindWithTag("Player").transform;
+        Collider myCol = GetComponent<Collider>();
+        Collider targetCol = target.GetComponent<Collider>();
+        if (myCol != null && targetCol != null)
+        {
+            Physics.IgnoreCollision(myCol, targetCol);
+        }
     }
 
     void Update()
     {
         if (target == null) return;
 
-        float distance = Vector3.Distance(transform.position, target.transform.position);
+        Vector3 targetPos = target.position + offset;
+        transform.position = Vector3.Lerp(transform.position, targetPos, Time.deltaTime * moveSpeed);
 
-        if (distance > followDistance)
-        {
-            Vector3 direction = (target.transform.position - transform.position).normalized;
-            transform.position += direction * followSpeed * Time.deltaTime;
-        }
+        //transform.LookAt(target);
     }
 }
