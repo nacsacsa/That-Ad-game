@@ -7,6 +7,7 @@ TagManager:
   - fold
   - gate
   - Prefab
+  - Enemy
   layers:
   - Default
   - TransparentFX

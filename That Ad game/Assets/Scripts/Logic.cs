@@ -7,10 +7,14 @@ public class Logic : MonoBehaviour
     public GameObject player;
     public GameObject obsticlesPrefab;
     public GameObject playerPrefab;
+    public GameObject EnemyPrefab;
 
-    private float timer = 0f;
+    private float timerObsticle = 0f;
+    private float timerEnemy = 0f;
     public float spawnInterval = 5f;
+    public float spawnEnemyInterval = 6f;
     private List<GameObject> players = new List<GameObject>();
+    private List<GameObject> enemies = new List<GameObject>();
 
     void Start()
     {
@@ -19,12 +23,18 @@ public class Logic : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
+        timerObsticle += Time.deltaTime;
+        timerEnemy += Time.deltaTime;
 
-        if (timer >= spawnInterval)
+        if (timerObsticle >= spawnInterval)
         {
             SpawnObstacle();
-            timer = 0f;
+            timerObsticle = 0f;
+        }
+        if (timerEnemy >= spawnEnemyInterval)
+        {
+            SpawnEnemies();
+            timerEnemy = 0f;
         }
         if (GameOver())
         {
@@ -38,6 +48,12 @@ public class Logic : MonoBehaviour
     {
         Vector3 spawnPosition = new Vector3(400f, 0.5f, -4.89094f);
         Instantiate(obsticlesPrefab, spawnPosition, Quaternion.identity);
+    }
+
+    private void SpawnEnemies()
+    {
+        Vector3 spawnPosition = new Vector3(400f, 0.5f, -4.89094f);
+        Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
     }
 
     public void ApplyGateEffect(char operation, int value)
