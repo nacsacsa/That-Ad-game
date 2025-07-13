@@ -8,6 +8,7 @@ public class Logic : MonoBehaviour
     public GameObject obsticlesPrefab;
     public GameObject playerPrefab;
     public GameObject EnemyPrefab;
+    private bool go = false;
 
     private float timerObsticle = 0f;
     private float timerEnemy = 0f;
@@ -23,25 +24,30 @@ public class Logic : MonoBehaviour
 
     void Update()
     {
+        if (go)
+        {
+            timerEnemy += Time.deltaTime;
+        }
         timerObsticle += Time.deltaTime;
-        timerEnemy += Time.deltaTime;
 
         if (timerObsticle >= spawnInterval)
         {
             SpawnObstacle();
             timerObsticle = 0f;
+            go = true;
         }
         if (timerEnemy >= spawnEnemyInterval)
         {
             SpawnEnemies();
             timerEnemy = 0f;
+            go = false;
         }
         if (GameOver())
         {
             Time.timeScale = 0;
             Debug.Log("VÉGE");
         }
-        Debug.Log(Lives);
+        Debug.Log("Élet: " + Lives + " Gat: " + timerObsticle + " Enemy: " + timerEnemy);
     }
 
     private void SpawnObstacle()
@@ -52,8 +58,14 @@ public class Logic : MonoBehaviour
 
     private void SpawnEnemies()
     {
-        Vector3 spawnPosition = new Vector3(400f, 0.5f, -4.89094f);
-        Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
+        //Vector3 spawnPosition = new Vector3(400f, 0.5f, Random.Range(-4.5f, -5f)/*-4.89094f*/);
+        int numberOfEnemies = Lives + Random.Range(20, 50);
+        for (int i = 0; i < numberOfEnemies; i++)
+        {
+            Vector3 spawnPosition = new Vector3(Random.Range(370f, 400f)/*400f*/, 0.5f, Random.Range(-10f, 5f)/*-4.89094f*/);
+            Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
+        }
+        //Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
     }
 
     public void ApplyGateEffect(char operation, int value)
