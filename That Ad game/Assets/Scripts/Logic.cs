@@ -124,22 +124,22 @@ public class Logic : MonoBehaviour
             szam = Random.Range(1, numberOfEnemies * 2);
         }
         helyesSzorzas = szam;
-        szam = Random.Range(1, numberOfEnemies);
+        szam = Random.Range(1, numberOfEnemies * 2);
         while (Lives + szam < numberOfEnemies)
         {
-            szam = Random.Range(1, numberOfEnemies);
+            szam = Random.Range(1, numberOfEnemies * 2);
         }
         helyesOsszeadas = szam;
         szam = Random.Range(1, numberOfEnemies * 2);
-        while (!(Lives * szam >= numberOfEnemies))
+        while (!(Lives * szam < numberOfEnemies))
         {
             szam = Random.Range(1, numberOfEnemies * 2);
         }
         helyteleSzorzas = szam;
-        szam = Random.Range(1, numberOfEnemies);
-        while (!(Lives + szam >= numberOfEnemies))
+        szam = Random.Range(1, numberOfEnemies * 2);
+        while (!(Lives + szam < numberOfEnemies))
         {
-            szam = Random.Range(1, numberOfEnemies);
+            szam = Random.Range(1, numberOfEnemies * 2);
         }
         helytelenOsszeadas = szam;
     }
