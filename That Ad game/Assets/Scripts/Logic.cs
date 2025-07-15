@@ -11,7 +11,7 @@ public class Logic : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject EnemyPrefab;
     private bool go = false;
-    private int numberOfEnemies;
+    private int numberOfEnemies = 1;
 
     private float timerObsticle = 0f;
     private float timerEnemy = 0f;
@@ -115,32 +115,31 @@ public class Logic : MonoBehaviour
         }
     }
 
-    private void GateValueChoose()
-    {
-
-    }
-    
     private void CalculateGateNumbers()
     {
         int szam = 0;
-        while (Lives * szam >= 50)
+        szam = Random.Range(1, numberOfEnemies * 2);
+        while (Lives * szam < numberOfEnemies)
         {
-            szam = Random.Range(0, 10);
+            szam = Random.Range(1, numberOfEnemies * 2);
         }
         helyesSzorzas = szam;
-        while (Lives + szam >= 50)
+        szam = Random.Range(1, numberOfEnemies);
+        while (Lives + szam < numberOfEnemies)
         {
-            szam = Random.Range(0, 10);
+            szam = Random.Range(1, numberOfEnemies);
         }
         helyesOsszeadas = szam;
-        while (!(Lives * szam >= 50))
+        szam = Random.Range(1, numberOfEnemies * 2);
+        while (!(Lives * szam >= numberOfEnemies))
         {
-            szam = Random.Range(0, 10);
+            szam = Random.Range(1, numberOfEnemies * 2);
         }
         helyteleSzorzas = szam;
-        while (!(Lives + szam >= 50))
+        szam = Random.Range(1, numberOfEnemies);
+        while (!(Lives + szam >= numberOfEnemies))
         {
-            szam = Random.Range(0, 10);
+            szam = Random.Range(1, numberOfEnemies);
         }
         helytelenOsszeadas = szam;
     }
