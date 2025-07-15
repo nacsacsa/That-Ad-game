@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.Rendering.HDROutputUtils;
 
 public class Logic : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class Logic : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject EnemyPrefab;
     private bool go = false;
+    private int numberOfEnemies;
 
     private float timerObsticle = 0f;
     private float timerEnemy = 0f;
@@ -16,6 +19,11 @@ public class Logic : MonoBehaviour
     public float spawnEnemyInterval = 6f;
     private List<GameObject> players = new List<GameObject>();
     private List<GameObject> enemies = new List<GameObject>();
+
+    private int helyesOsszeadas;
+    private int helyesSzorzas;
+    private int helytelenOsszeadas;
+    private int helyteleSzorzas;
 
     void Start()
     {
@@ -47,25 +55,104 @@ public class Logic : MonoBehaviour
             Time.timeScale = 0;
             Debug.Log("VÉGE");
         }
-        Debug.Log("Élet: " + Lives + " Gat: " + timerObsticle + " Enemy: " + timerEnemy);
+        Debug.Log("Élet: " + Lives + " Gat: " + timerObsticle + " Enemy: " + enemies.Count);
     }
 
     private void SpawnObstacle()
     {
+        numberOfEnemies = Lives + Random.Range(10, 30);
+        CalculateGateNumbers();
         Vector3 spawnPosition = new Vector3(400f, 0.5f, -4.89094f);
-        Instantiate(obsticlesPrefab, spawnPosition, Quaternion.identity);
+        GameObject obstacleObject = Instantiate(obsticlesPrefab, spawnPosition, Quaternion.identity);
+
+        Transform leftGate = obstacleObject.transform.Find("Gate Left");
+        Transform rightGate = obstacleObject.transform.Find("Gate Right");
+
+        bool correctOnLeft = Random.value < 0.5f;
+
+        bool correctIsAddition = Random.value < 0.5f;
+        int correctValue = correctIsAddition ? helyesOsszeadas : helyesSzorzas;
+        char correctOp = correctIsAddition ? '+' : '*';
+
+        bool incorrectIsAddition = Random.value < 0.5f;
+        int incorrectValue = incorrectIsAddition ? helytelenOsszeadas : helyteleSzorzas;
+        char incorrectOp = incorrectIsAddition ? '+' : '*';
+
+        if (leftGate != null)
+        {
+            GateValueCallculator leftScript = leftGate.GetComponent<GateValueCallculator>();
+            if (leftScript != null)
+            {
+                if (correctOnLeft)
+                {
+                    leftScript.number = correctValue;
+                    leftScript.operation = correctOp;
+                }
+                else
+                {
+                    leftScript.number = incorrectValue;
+                    leftScript.operation = incorrectOp;
+                }
+            }
+        }
+
+        if (rightGate != null)
+        {
+            GateValueCallculator rightScript = rightGate.GetComponent<GateValueCallculator>();
+            if (rightScript != null)
+            {
+                if (correctOnLeft)
+                {
+                    rightScript.number = incorrectValue;
+                    rightScript.operation = incorrectOp;
+                }
+                else
+                {
+                    rightScript.number = correctValue;
+                    rightScript.operation = correctOp;
+                }
+            }
+        }
+    }
+
+    private void GateValueChoose()
+    {
+
+    }
+    
+    private void CalculateGateNumbers()
+    {
+        int szam = 0;
+        while (Lives * szam >= 50)
+        {
+            szam = Random.Range(0, 10);
+        }
+        helyesSzorzas = szam;
+        while (Lives + szam >= 50)
+        {
+            szam = Random.Range(0, 10);
+        }
+        helyesOsszeadas = szam;
+        while (!(Lives * szam >= 50))
+        {
+            szam = Random.Range(0, 10);
+        }
+        helyteleSzorzas = szam;
+        while (!(Lives + szam >= 50))
+        {
+            szam = Random.Range(0, 10);
+        }
+        helytelenOsszeadas = szam;
     }
 
     private void SpawnEnemies()
     {
-        //Vector3 spawnPosition = new Vector3(400f, 0.5f, Random.Range(-4.5f, -5f)/*-4.89094f*/);
-        int numberOfEnemies = Lives + Random.Range(20, 50);
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            Vector3 spawnPosition = new Vector3(Random.Range(370f, 400f)/*400f*/, 0.5f, Random.Range(-10f, 5f)/*-4.89094f*/);
-            Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
+            Vector3 spawnPosition = new Vector3(Random.Range(380f, 400f), 0.5f, Random.Range(-10f, 5f));
+            GameObject newEnemy = Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
+            enemies.Add(newEnemy);
         }
-        //Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
     }
 
     public void ApplyGateEffect(char operation, int value)
