@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.Rendering.HDROutputUtils;
@@ -24,6 +25,9 @@ public class Logic : MonoBehaviour
     private int helyesSzorzas;
     private int helytelenOsszeadas;
     private int helyteleSzorzas;
+
+    public TextMeshProUGUI hpText;
+    public TextMeshProUGUI enemyText;
 
     void Start()
     {
@@ -56,6 +60,9 @@ public class Logic : MonoBehaviour
             Debug.Log("VÉGE");
         }
         Debug.Log("Élet: " + Lives + " Gat: " + timerObsticle + " Enemy: " + enemies.Count);
+
+        hpText.text = "HP: " + Lives;
+        enemyText.text = "Enemies: " + numberOfEnemies;
     }
 
     private void SpawnObstacle()
