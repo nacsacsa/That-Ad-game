@@ -12,6 +12,7 @@ public class Logic : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject EnemyPrefab;
     private bool go = false;
+    private bool stageWin = false;
     private int numberOfEnemies = 1;
 
     private float timerObsticle = 0f;
@@ -32,27 +33,26 @@ public class Logic : MonoBehaviour
     void Start()
     {
         players.Add(player);
+        SpawnObstacle();
     }
 
     void Update()
     {
+        if (stageWin)
+        {
+            timerObsticle += Time.deltaTime;
+        }
         if (go)
         {
             timerEnemy += Time.deltaTime;
         }
-        timerObsticle += Time.deltaTime;
-
         if (timerObsticle >= spawnInterval)
         {
             SpawnObstacle();
-            timerObsticle = 0f;
-            go = true;
         }
         if (timerEnemy >= spawnEnemyInterval)
         {
             SpawnEnemies();
-            timerEnemy = 0f;
-            go = false;
         }
         if (GameOver())
         {
@@ -67,6 +67,8 @@ public class Logic : MonoBehaviour
 
     private void SpawnObstacle()
     {
+        timerObsticle = 0f;
+        go = true;
         numberOfEnemies = Lives + Random.Range(10, 30);
         CalculateGateNumbers();
         Vector3 spawnPosition = new Vector3(400f, 0.5f, -4.89094f);
@@ -153,6 +155,8 @@ public class Logic : MonoBehaviour
 
     private void SpawnEnemies()
     {
+        timerEnemy = 0f;
+        go = false;
         for (int i = 0; i < numberOfEnemies; i++)
         {
             Vector3 spawnPosition = new Vector3(Random.Range(380f, 400f), 0.5f, Random.Range(-10f, 5f));
@@ -168,35 +172,18 @@ public class Logic : MonoBehaviour
         switch (operation)
         {
             case '+': newLives += value; break;
-            case '-': newLives -= value; break;
             case '*': newLives *= value; break;
-            case '/': newLives /= value; break;
         }
 
         int difference = newLives - Lives;
         Lives = newLives;
 
-        if (difference > 0)
+        for (int i = 0; i < difference; i++)
         {
-            for (int i = 0; i < difference; i++)
-            {
-                float numm1 = Random.Range(-0.2f, 0.2f);
-                float numm2 = Random.Range(-0.2f, 0.2f);
-                GameObject newPlayer = Instantiate(playerPrefab, player.transform.position + Vector3.forward * (1 * numm1) + Vector3.left * (1 * numm2), Quaternion.identity);
-                players.Add(newPlayer);
-            }
-        }
-        else if (difference < 0)
-        {
-            for (int i = 0; i < -difference; i++)
-            {
-                if (players.Count > 0)
-                {
-                    GameObject toRemove = players[players.Count - 1];
-                    players.RemoveAt(players.Count - 1);
-                    Destroy(toRemove);
-                }
-            }
+            float numm1 = Random.Range(-0.2f, 0.2f);
+            float numm2 = Random.Range(-0.2f, 0.2f);
+            GameObject newPlayer = Instantiate(playerPrefab, player.transform.position + Vector3.forward * (1 * numm1) + Vector3.left * (1 * numm2), Quaternion.identity);
+            players.Add(newPlayer);
         }
     }
 
