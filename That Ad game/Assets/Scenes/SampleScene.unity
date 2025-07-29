@@ -740,15 +740,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b097e1a46e1c9428c20b4e723c4a45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Lives: 1
   player: {fileID: 1187752319}
   obsticlesPrefab: {fileID: 192200942790430378, guid: dcae8ead266a101469ba7aa1be46c7f4, type: 3}
   playerPrefab: {fileID: 3977178082801342596, guid: 61c6e33530310c747a54d611808c8131, type: 3}
-  EnemyPrefab: {fileID: 4648037841157020256, guid: a886e4b07749e1647973d7bd6a70316a, type: 3}
-  spawnInterval: 10
-  spawnEnemyInterval: 3
+  enemyPrefab: {fileID: 4648037841157020256, guid: a886e4b07749e1647973d7bd6a70316a, type: 3}
   hpText: {fileID: 14199488}
   enemyText: {fileID: 2105525754}
+  Lives: 1
+  spawnInterval: 10
+  spawnEnemyInterval: 3
 --- !u!4 &523306361
 Transform:
   m_ObjectHideFlags: 0

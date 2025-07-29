@@ -22,6 +22,7 @@ public class Logic : MonoBehaviour
     private bool isRun = false;
     private bool isFighting = false;
     private bool isStart = true;
+    private bool hasCombatStarted = false;
 
     private float obstacleTimer = 0f;
     private float enemyTimer = 0f;
@@ -46,40 +47,42 @@ public class Logic : MonoBehaviour
 
     void Update()
     {
-        HandleRunLogic();
-        HandleFightLogic();
+        HandleGameStates();
         UpdateUI();
         CheckGameOver();
+        Debug.Log(isFighting);
     }
 
-    private void HandleRunLogic()
+    private void HandleGameStates()
     {
-        if (!isRun) return;
-
-        obstacleTimer += Time.deltaTime;
-
-        if (obstacleTimer >= spawnInterval)
-        {
-            SpawnObstacle();
-        }
-    }
-
-    private void HandleFightLogic()
-    {
-        if (numberOfEnemies == 0 && !isStart)
-        {
-            isFight = false;
-            isRun = true;
-        }
+        if (isFighting) return;
 
         if (isFight)
         {
             fightCounter += Time.deltaTime;
-            if (fightCounter > 3f)
+            if (fightCounter >= 2f)
             {
                 isFighting = true;
                 isFight = false;
                 fightCounter = 0f;
+            }
+            return;
+        }
+
+        if (hasCombatStarted && numberOfEnemies == 0)
+        {
+            isRun = true;
+            isFighting = false;
+            obstacleTimer = 0f;
+            return;
+        }
+
+        if (isRun)
+        {
+            obstacleTimer += Time.deltaTime;
+            if (obstacleTimer >= spawnInterval)
+            {
+                SpawnObstacle();
             }
         }
 
@@ -160,11 +163,12 @@ public class Logic : MonoBehaviour
         isFight = true;
         isEnemySpawnable = false;
         enemyTimer = 0f;
+        hasCombatStarted = true;
 
         for (int i = 0; i < numberOfEnemies; i++)
         {
-            Vector3 spawnPos = new Vector3(Random.Range(380f, 400f), 0.5f, Random.Range(-10f, 5f));
-            GameObject newEnemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            Vector3 spawnPosition = new Vector3(Random.Range(380f, 400f), 0.5f, Random.Range(-10f, 5f));
+            GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             enemies.Add(newEnemy);
         }
     }
