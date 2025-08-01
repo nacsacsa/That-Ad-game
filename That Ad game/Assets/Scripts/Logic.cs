@@ -20,7 +20,7 @@ public class Logic : MonoBehaviour
     private bool isEnemySpawnable = false;
     private bool isFight = false;
     private bool isRun = false;
-    private bool isFighting = false;
+    public bool isFighting = false;
     private bool isStart = true;
     private bool hasCombatStarted = false;
 
@@ -47,6 +47,7 @@ public class Logic : MonoBehaviour
 
     void Update()
     {
+        Lives = players.Count;
         HandleGameStates();
         UpdateUI();
         CheckGameOver();
@@ -184,12 +185,21 @@ public class Logic : MonoBehaviour
         }
 
         int newUnits = Lives - oldLives;
+        isFighting = true;
 
         for (int i = 0; i < newUnits; i++)
         {
             Vector3 offset = new Vector3(Random.Range(-0.2f, 0.2f), 0f, Random.Range(-0.2f, 0.2f));
             GameObject clone = Instantiate(playerPrefab, player.transform.position + offset, Quaternion.identity);
             players.Add(clone);
+        }
+    }
+
+    public void RemovePlayer(GameObject playerObj)
+    {
+        if (players.Contains(playerObj))
+        {
+            players.Remove(playerObj);
         }
     }
 

@@ -723,7 +723,7 @@ GameObject:
   - component: {fileID: 523306360}
   m_Layer: 0
   m_Name: Logic
-  m_TagString: Untagged
+  m_TagString: logic
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -749,6 +749,7 @@ MonoBehaviour:
   Lives: 1
   spawnInterval: 10
   spawnEnemyInterval: 3
+  isFighting: 0
 --- !u!4 &523306361
 Transform:
   m_ObjectHideFlags: 0
